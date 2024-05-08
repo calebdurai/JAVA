@@ -981,6 +981,129 @@ public class MultipleQueriesExample {
 }
 
 
+import java.sql.*;
+import java.util.Scanner;
+
+public class MenuDrivenDatabaseOperations {
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mydatabase";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+             Scanner scanner = new Scanner(System.in)) {
+            System.out.println("Connected to the database.");
+
+            while (true) {
+                System.out.println("\nMenu:");
+                System.out.println("1. Insert");
+                System.out.println("2. Update");
+                System.out.println("3. Delete");
+                System.out.println("4. Select");
+                System.out.println("5. Exit");
+                System.out.println("Enter your choice:");
+
+                int choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline character
+
+                switch (choice) {
+                    case 1:
+                        insertRecord(connection, scanner);
+                        break;
+                    case 2:
+                        updateRecord(connection, scanner);
+                        break;
+                    case 3:
+                        deleteRecord(connection, scanner);
+                        break;
+                    case 4:
+                        selectRecords(connection);
+                        break;
+                    case 5:
+                        System.out.println("Exiting program.");
+                        return;
+                    default:
+                        System.out.println("Invalid choice! Please enter a number between 1 and 5.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void insertRecord(Connection connection, Scanner scanner) throws SQLException {
+        System.out.println("Enter name:");
+        String name = scanner.nextLine();
+
+        System.out.println("Enter age:");
+        int age = scanner.nextInt();
+
+        String sql = "INSERT INTO employees (name, age) VALUES (?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, age);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Record inserted successfully.");
+            } else {
+                System.out.println("Failed to insert record.");
+            }
+        }
+    }
+
+    private static void updateRecord(Connection connection, Scanner scanner) throws SQLException {
+        System.out.println("Enter employee ID:");
+        int id = scanner.nextInt();
+
+        System.out.println("Enter new age:");
+        int newAge = scanner.nextInt();
+
+        String sql = "UPDATE employees SET age = ? WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, newAge);
+            statement.setInt(2, id);
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Record updated successfully.");
+            } else {
+                System.out.println("Failed to update record.");
+            }
+        }
+    }
+
+    private static void deleteRecord(Connection connection, Scanner scanner) throws SQLException {
+        System.out.println("Enter employee ID:");
+        int id = scanner.nextInt();
+
+        String sql = "DELETE FROM employees WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            int rowsDeleted = statement.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Record deleted successfully.");
+            } else {
+                System.out.println("Failed to delete record.");
+            }
+        }
+    }
+
+    private static void selectRecords(Connection connection) throws SQLException {
+        String sql = "SELECT * FROM employees";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+            }
+        }
+    }
+}
+
+
+
 
 
 
