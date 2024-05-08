@@ -895,6 +895,42 @@ public class MatrixTranspose {
 }
 
 
+import java.sql.*;
+
+public class DatabaseConnectivity {
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mydatabase";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+        // Establish connection to the database
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            System.out.println("Connected to the database.");
+
+            // Create a statement
+            Statement statement = connection.createStatement();
+
+            // Execute a query
+            String sqlQuery = "SELECT * FROM mytable";
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            // Process the result set
+            while (resultSet.next()) {
+                // Retrieve data from the result set
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+
+                // Display the data
+                System.out.println("ID: " + id + ", Name: " + name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
 
 
 
