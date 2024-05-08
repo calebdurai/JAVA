@@ -931,6 +931,57 @@ public class DatabaseConnectivity {
 }
 
 
+import java.sql.*;
+
+public class MultipleQueriesExample {
+    // JDBC URL, username, and password of MySQL server
+    private static final String JDBC_URL = "jdbc:mysql://localhost:3306/mydatabase";
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+        // Establish connection to the database
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD)) {
+            System.out.println("Connected to the database.");
+
+            // Create a statement
+            Statement statement = connection.createStatement();
+
+            // Execute multiple queries
+            String[] queries = {
+                "SELECT * FROM employees", // Select all records from employees table
+                "INSERT INTO employees (name, age) VALUES ('John', 30)", // Insert a new employee
+                "UPDATE employees SET age = 31 WHERE name = 'John'", // Update John's age
+                "DELETE FROM employees WHERE name = 'John'" // Delete John's record
+            };
+
+            for (String query : queries) {
+                boolean isResultSet = statement.execute(query);
+
+                if (isResultSet) {
+                    // If the result is a ResultSet, process it
+                    ResultSet resultSet = statement.getResultSet();
+                    while (resultSet.next()) {
+                        // Process the result set
+                        int id = resultSet.getInt("id");
+                        String name = resultSet.getString("name");
+                        int age = resultSet.getInt("age");
+                        System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age);
+                    }
+                } else {
+                    // If the result is not a ResultSet, print the update count
+                    int updateCount = statement.getUpdateCount();
+                    System.out.println("Query executed, update count: " + updateCount);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
 
 
 
