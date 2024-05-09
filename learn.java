@@ -1107,3 +1107,111 @@ public class sui {
 			
 		}
 
+import java.util.Scanner;
+
+public class BinarySearch {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+        int[] array = new int[n];
+
+        System.out.println("Enter " + n + " sorted integers:");
+        for (int i = 0; i < n; i++) {
+            array[i] = scanner.nextInt();
+        }
+
+        System.out.print("Enter the number to search for: ");
+        int target = scanner.nextInt();
+
+        int result = binarySearch(array, target);
+        if (result == -1) {
+            System.out.println("Number not found.");
+        } else {
+            System.out.println("Number found at index: " + result);
+        }
+    }
+
+    public static int binarySearch(int[] arr, int key) {
+        int start = 0;
+        int end = arr.length - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] == key) {
+                return mid;
+            } else if (arr[mid] < key) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return -1;
+    }
+}
+
+
+
+import java.util.*;
+public class bublesort {
+	
+	public static void main(String [] args) {
+		Scanner scan=new Scanner(System.in);
+		int [] arr=new int[10];
+		System.out.println("enter array:");
+		for(int i=0;i<10;i++) {
+			arr[i]=scan.nextInt();
+		}
+		for(int i=0;i<arr.length-1;i++) {
+			for(int j=0;j<arr.length-i-1;j++) {
+				int temp;
+				if(arr[j]>arr[j+1]) {
+					temp=arr[j];
+					arr[j]=arr[j+1];
+					arr[j+1]=temp;
+				}
+			}
+		}
+		for(int i=0;i<10;i++) {
+			System.out.println(arr[i]);
+		}
+	}
+}
+
+import java.util.Scanner;
+
+public class LinearSearch {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+        int[] array = new int[n];
+
+        System.out.println("Enter " + n + " integers:");
+        for (int i = 0; i < n; i++) {
+            array[i] = scanner.nextInt();
+        }
+
+        System.out.print("Enter the number to search for: ");
+        int target = scanner.nextInt();
+
+        int index = linearSearch(array, target);
+        if (index != -1) {
+            System.out.println("Number found at index: " + index);
+        } else {
+            System.out.println("Number not found.");
+        }
+    }
+
+    public static int linearSearch(int[] arr, int key) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == key) {
+                return i; 
+            }
+        }
+        return -1; 
+    }
+}
+
+
